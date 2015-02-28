@@ -1,4 +1,5 @@
 require 'json'
+require 'digest'
 #category
 #  key
 #  src
@@ -53,8 +54,17 @@ class Category
   def initialize(attrs = {})
     @key = attrs[:key]
     @descr = attrs[:descr]
+    @hash = hashify
+    
     @categories = CategoryList.new
     @values = ValueList.new
+  end
+  
+  def hashify
+    md5 = Digest::MD5.new
+  	md5.update(self.key)
+  	md5.update(self.descr) if self.descr
+  	md5.hexdigest()
   end
   
   def match?(attrs = {})
