@@ -156,6 +156,15 @@ class ProcessCsv
     @category = Category.new(key: "Expenses")
   end
   
+  def fund_lookup(code)
+    case code
+    when "1000"
+      "General Fund"
+    else
+      "Fund #{code}"
+    end
+  end
+  
   def dept_lookup(code)
     case code
     when "00"
@@ -217,9 +226,11 @@ class ProcessCsv
   
   def transform(file = "expenses.csv")
     CSV.foreach(file).each_with_index do |row, i|
+      f = fund_lookup(row[0])
       k = dept_lookup(row[1])
       next if k == "Unknown"
-      cat = @category.categories.find(key: k)
+      fund = @category.categories.find(key: f)
+      cat = fund.categories.find(key: k)
       subc = cat.subcategory(row[8])
       section = row[7].split('-')[4]
       record(subc, dollar_value_in(row), i)
