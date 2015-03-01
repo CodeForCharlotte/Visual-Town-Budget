@@ -26,6 +26,11 @@ class CategoryList
     @categories
   end
   
+  def subtotal(year)
+    vals = all.collect{ |c| c.values.find_by_year(year) }.flatten
+    vals.inject(0){ |sum, this_val| sum += this_val.val}
+  end
+  
   def find(attrs)
     c = categories.select{ |elt| elt.match?(attrs) }.first
     if c.nil?
@@ -44,7 +49,7 @@ class CategoryList
   end
   
   def to_hash
-    all.collect{ |c| c.to_hash }
+    all.collect{ |c| c.to_hash }.select{ |h| h }
   end  
 end
 
@@ -80,11 +85,16 @@ class Category
   end
   
   def to_hash
+    return nil if !categories.any? && !values.values.any?
+    ch = categories.to_hash # compute leaves first, give subtotal something to find [jvf]
+    if categories.subtotal("2015") > 0
+      value(categories.subtotal("2015"), 0)
+    end
     {
       key: self.key, 
       src: self.src, 
       hash: self.hash, 
-      sub: categories.to_hash, 
+      sub: ch,
       descr: self.descr, 
       url: self.url, 
       values: values.to_hash
@@ -140,10 +150,10 @@ end
 
 class ProcessCsv
   
-  attr_accessor :categories
+  attr_accessor :category
   
   def initialize
-    @categories = CategoryList.new
+    @category = Category.new(key: "Expenses")
   end
   
   def dept_lookup(code)
@@ -209,12 +219,12 @@ class ProcessCsv
     CSV.foreach(file).each_with_index do |row, i|
       k = dept_lookup(row[1])
       next if k == "Unknown"
-      category = categories.find(key: k)
-      subc = category.subcategory(row[8])
+      cat = @category.categories.find(key: k)
+      subc = cat.subcategory(row[8])
       section = row[7].split('-')[4]
       record(subc, dollar_value_in(row), i)
     end
-    categories.to_hash
+    @category.to_hash
   end
 end
 puts JSON.pretty_generate(ProcessCsv.new.transform)
