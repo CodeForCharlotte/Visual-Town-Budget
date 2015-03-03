@@ -229,8 +229,13 @@ class ProcessCsv
       f = fund_lookup(row[0])
       k = dept_lookup(row[1])
       next if k == "Unknown"
-      fund = @category.categories.find(key: f)
-      cat = fund.categories.find(key: k)
+      cat = nil
+      if row[0] == "1000"
+        fund = @category.categories.find(key: f)
+        cat = fund.categories.find(key: k)
+      else
+        cat = @category.categories.find(key: k)
+      end
       subc = cat.subcategory(row[8])
       section = row[7].split('-')[4]
       record(subc, dollar_value_in(row), i)
