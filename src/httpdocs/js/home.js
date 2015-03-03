@@ -154,6 +154,7 @@ avb.home = function () {
     *   Initiialize function
     */
     init = function () {
+			  setContribution();
 
         /*
         *   hides overlay when clicked
@@ -277,7 +278,7 @@ avb.home = function () {
     */
     setContribution = function () {
         // value validation
-        var input = parseFloat($('#tax-input').val());
+        var input = 0;
         if (isNaN(input)) return;
         // yearly contribution is set
         avb.userContribution = input;

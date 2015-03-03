@@ -10,7 +10,7 @@
                 "display:inline-block;">
                     <p>Government budgets can be tough to understand, but now the <?php echo $longName; ?>, <?php echo $state; ?> is providing the next generation of accessibility in financial information that allows citizens to view, engage with, and discuss.</p>
 
-                    <div style="margin-top: 25px;">
+                    <!-- <div style="margin-top: 25px;">
                         <div>
                             <?php echo $shortName; ?> residents, see where your tax dollars
                             go:
@@ -30,12 +30,12 @@
                             "tax-input-start" style=
                             "text-decoration:underline;">Start</a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="home-column" id="home-col2" style=
                 "display:inline-block; margin-left:5%;">
-                    <div>
+                    <!-- <div>
                         Start learning about <?php echo $shortName; ?>:
 
                         <div>
@@ -52,13 +52,12 @@
                             <a class='link' data-section="expenses" id='q3'
                             style='color:#db4e86'>How expensive is Snow &#38; Ice Removal?</a>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <p style="margin-top:20px;"><a class="link" href=
+                    <!-- <p style="margin-top:20px;"><a class="link" href=
                     "javascript:;" onclick="avb.home.hide(true);" style=
-                    "text-decoration:underline;">Start the tour</a> or
-                    <a class="link" href="javascript:;" onclick=
-                    "avb.home.hide();" style=
+                    "text-decoration:underline;">Start the tour</a> or -->
+                    <a class="link" href="/expenses" style=
                     "text-decoration:underline;">Dive in</a></p>
                 </div>
             </div>
